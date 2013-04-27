@@ -3,7 +3,7 @@ import time
 
 base = 'https://data.mtgox.com/api/2/'
 
-def _create_nonce(self):
+def create_nonce(self):
     return int(time.time() * 1000000)
 
 def makereq(key, secret, path, data):
@@ -13,7 +13,7 @@ def makereq(key, secret, path, data):
     hmac = str(hmac.new(secret, hash_data, sha512))
 
     header = {
-        'User-Agent': 'My-First-Trade-Bot',
+        'User-Agent': 'businesscat-bot',
         'Rest-Key': key,
         'Rest-Sign': base64.b64encode(hmac),
         'Accept-encoding': 'GZIP',
