@@ -8,7 +8,8 @@ def create_nonce(self):
 
 def makereq(key, secret, path, data):
     hash_data = (path + chr(0) + data).encode() # turn it a byte representation instead of string
-    secret = base64.b64decode(secret)
+    #secret = base64.b64decode(secret)
+    secret = base64.b64decode(bytes(secret, "UTF-8"))
     sha512 = hashlib.sha512
     hmac = str(hmac.new(secret, hash_data, sha512))
 
