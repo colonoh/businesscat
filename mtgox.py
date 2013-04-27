@@ -1,4 +1,4 @@
-import hmac, base64, hashlib, urllib2
+import hmac, base64, hashlib, urllib.request, urllib.error, urllib.parse
 base = 'https://data.mtgox.com/api/2/'
 
 def makereq(key, secret, path, data):
@@ -14,4 +14,4 @@ def makereq(key, secret, path, data):
         'Accept-encoding': 'GZIP',
     }
 
-    return urllib2.Request(base + path, data, header)
+    return urllib.request.Request(base + path, data, header)
