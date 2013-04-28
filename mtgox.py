@@ -17,7 +17,13 @@ def send_request(api_method, method_args={}):
         request = urllib2.Request('https://data.mtgox.com/api/2/' + api_method, method_args, header) # create the request
         response = urllib2.urlopen(request, method_args) # send the request
         if response.getcode() == 200: # OK
-            return json.load(response) # decode the request
-    
+            output = json.load(response) # decode the request
+            
+            # if MtGox returns and says it is unsuccessful, print raw output and abort
+            if output['result'] == 'success':
+                return output
+            else:
+                pprint.pprint(output)
+                sys.exit('MtGox respons result was NOT \'success\'...aborting.')
     except Exception as err:
         sys.exit('Request to MtGox failed: %s' % err)
