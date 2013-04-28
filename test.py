@@ -1,8 +1,5 @@
 from mtgox import create_nonce, send_request
 
-data = 'nonce=' + str(create_nonce())  
-api_method = 'BTCUSD/money/ticker_fast'
-
-output = send_request(api_method, data)
+output = send_request('BTCUSD/MONEY/TICKER_FAST', 'nonce=' + str(create_nonce()))
 
 print(output)
