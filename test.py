@@ -1,17 +1,13 @@
 from mtgox import *
 from key import *
-import urllib
-
+import urllib2
 import json
 
+# get ticker data
+data = 'nonce=' + str(create_nonce())  
+request = makereq(key, secret, 'BTCUSD/money/info', data) # create the request
+response = urllib2.urlopen(request, data)
 
-#post_data = 'nonce=' + str(create_nonce())
-#post_data = urllib.urlencode(urllib.urlencode)
-inp = {}
-inp['nonce'] = str(int(time.time() * 1e6))
-print(inp)
-post_data = urllib.urlencode(inp.items())
-request = makereq(key, secret, 'BTCUSD/money/ticker', post_data)
-print('Request done.')
-output = json.load(response)
-print(output)
+print(json.load(response)) # convert from readable format
+
+
