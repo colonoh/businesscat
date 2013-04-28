@@ -1,13 +1,12 @@
-import time
-import hmac, urllib2, hashlib, base64, json, sys
+import hmac, urllib, urllib2, hashlib, base64, json, sys, time
 from key import key, secret
-
-def create_nonce():
-    return int(time.time() * 1000000)
     
 # Send a request like "BTCUSD/money/ticker" to the server and return the output in JSON format
-def send_request(api_method, data):
-    auth_code = hmac.new(base64.b64decode(secret), api_method + chr(0) + data, hashlib.sha512)
+def send_request(api_method, method_args):
+    method_args['nonce'] = int(time.time() * 1000000) # add the nonce to the list of arguments
+    method_args = urllib.urlencode(method_args.items()) # convert from a dictionary to a "percent-encoded" string
+    
+    auth_code = hmac.new(base64.b64decode(secret), api_method + chr(0) + method_args, hashlib.sha512)
     header = {
         'User-Agent': 'businesscat-bot',
         'Rest-Key': key,
@@ -15,8 +14,8 @@ def send_request(api_method, data):
     }
 
     try:
-        request = urllib2.Request('https://data.mtgox.com/api/2/' + api_method, data, header) # create the request
-        response = urllib2.urlopen(request, data) # send the request
+        request = urllib2.Request('https://data.mtgox.com/api/2/' + api_method, method_args, header) # create the request
+        response = urllib2.urlopen(request, method_args) # send the request
         if response.getcode() == 200: # OK
             return json.load(response) # decode the request
     
