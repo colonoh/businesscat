@@ -1,7 +1,7 @@
 '''
 sell  if falling, buy lower
 '''
-from mtgox import send_request
+import mtgox
 import time
 
 stoploss_percentage = 0.10
