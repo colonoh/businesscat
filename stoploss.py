@@ -7,15 +7,18 @@ import time
 stoploss_percentage = '0.05'
 buy_percentage = '0.05'
 selling = True
-falling = False
+#falling = False
+high_price = current_price()
 
 # every X minutes...
 while(True):
-    # check the current price
+    # check the current price, set high price if needed
+    high_price = max(current_price(), high_price)
+    
     # check to se if price is falling
     
-    # if falling quickly and a certain amount, sell
-    if selling and falling and current_price() < last_price * (1-stoploss_percentage):
+    # if under a certain amount, sell
+    if selling and current_price() < high_price * (1-stoploss_percentage):
         sell()
         selling = False
         # special code to handle buying after a crash
@@ -26,6 +29,7 @@ while(True):
         # see if buy orders exists
         
         # cancel last buy order and put new buy order in at correct price, if needed
+        # new buy should be at least X% under high_price!
         cancel()
         place_buy()
     
