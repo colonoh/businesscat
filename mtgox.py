@@ -27,3 +27,8 @@ def send_request(api_method, method_args={}):
                 sys.exit('MtGox respons result was NOT \'success\'...aborting.')
     except Exception as err:
         sys.exit('Request to MtGox failed: %s' % err)
+
+# get current prices for buy and sell orders
+def get_prices():
+    output = send_request('BTCUSD/MONEY/TICKER_FAST')    
+    return int(output['data']['buy']['value_int']), int(output['data']['sell']['value_int'])
