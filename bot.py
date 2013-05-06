@@ -14,13 +14,13 @@ while(True):
     
     # if below the adjusted target value, buy
     if buying and current_price() =< target_price:
-        mtgox.order('bid', amount, target_price)
+        order_id = mtgox.order('bid', amount, target_price)
         # pick new target and switch to selling
         buying = False
         
     # if above the dajusted target value, sell
     elif not buying and current_price() >= target_price:
-        mtgox.order('ask', amount, target_price)
+        order_id = mtgox.order('ask', amount, target_price)
         # pick new target and switch to buying
         buying = True
     
