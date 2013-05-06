@@ -38,11 +38,8 @@ def order(order_type, amount, price = None):
     if price is not None:
         args['price_int'] = price
     
-    output = _send_request('BTCUSD/money/order/add', args)
-    
-    # check if order was successfully added
-    if output['result'] == 'success':
-        return str(output['data'])
-    else:
-        pprint.pprint(output)
-        sys.exit('Error: MtGox order was unsuccessful.')
+    output = _send_request('BTCUSD/MONEY/ORDER/ADD', args)
+    return str(output['data']) # return the order ID
+
+def cancel(order_id):
+    return _send_request('BTCUSD/MONEY/ORDER/CANCEL', {'oid': order_id})
