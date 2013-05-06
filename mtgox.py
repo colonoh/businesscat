@@ -13,22 +13,36 @@ def send_request(api_method, method_args={}):
         'Rest-Sign': base64.b64encode(str(auth_code.digest())),
     }
 
-    try:
-        request = urllib2.Request('https://data.mtgox.com/api/2/' + api_method, method_args, header) # create the request
-        response = urllib2.urlopen(request, method_args) # send the request
-        if response.getcode() == 200: # OK
-            output = json.load(response) # decode the request
-            
-            # if MtGox returns and says it is unsuccessful, print raw output and abort
-            if output['result'] == 'success':
-                return output
-            else:
-                pprint.pprint(output)
-                sys.exit('MtGox respons result was NOT \'success\'...aborting.')
-    except Exception as err:
-        sys.exit('Request to MtGox failed: %s' % err)
+    request = urllib2.Request('https://data.mtgox.com/api/2/' + api_method, method_args, header) # create the request
+    response = urllib2.urlopen(request, method_args) # send the request
+    output = json.load(response) # decode the request
+        
+    # if MtGox returns and says it is unsuccessful, print raw output and abort
+    if output['result'] == 'success':
+        return output
+    else:
+        pprint.pprint(output)
+        sys.exit('Error: MtGox request was unsuccessful.')
 
 # get current prices for buy and sell orders
 def get_prices():
     output = send_request('BTCUSD/MONEY/TICKER_FAST')    
     return int(output['data']['buy']['value_int']), int(output['data']['sell']['value_int'])
+    
+# buy (or sell) some bitcoins, returns the order ID
+def order(order_type, amount, price = None):
+    args =  {'amount_int': amount, 'type': order_type}
+    
+    # if there is no price argument, place a market order
+    if price is not None:
+        args['price_int'] = price
+    
+    output = send_request('BTCUSD/money/order/add', args)
+    
+    if output['result'] == 'success':
+        return str(output['data'])
+    else:
+        pprint.pprint(output)
+        sys.exit('Error: MtGox order was unsuccessful.')
+        
+# sell some bitcoins
