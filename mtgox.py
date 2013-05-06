@@ -2,7 +2,7 @@ import hmac, urllib, urllib2, hashlib, base64, json, sys, time
 from key import key, secret
     
 # Send a request like "BTCUSD/money/ticker" to the server and return the output in JSON format
-def send_request(api_method, method_args={}):
+def _send_request(api_method, method_args={}):
     method_args['nonce'] = int(time.time() * 1000000) # add the nonce to the list of arguments
     method_args = urllib.urlencode(method_args.items()) # convert from a dictionary to a "percent-encoded" string
     
@@ -13,8 +13,9 @@ def send_request(api_method, method_args={}):
         'Rest-Sign': base64.b64encode(str(auth_code.digest())),
     }
 
-    request = urllib2.Request('https://data.mtgox.com/api/2/' + api_method, method_args, header) # create the request
-    response = urllib2.urlopen(request, method_args) # send the request
+    # form and send the request
+    request = urllib2.Request('https://data.mtgox.com/api/2/' + api_method, method_args, header)
+    response = urllib2.urlopen(request, method_args)
     output = json.load(response) # decode the request
         
     # if MtGox returns and says it is unsuccessful, print raw output and abort
@@ -26,23 +27,22 @@ def send_request(api_method, method_args={}):
 
 # get current prices for buy and sell orders
 def get_prices():
-    output = send_request('BTCUSD/MONEY/TICKER_FAST')    
+    output = _send_request('BTCUSD/MONEY/TICKER_FAST')    
     return int(output['data']['buy']['value_int']), int(output['data']['sell']['value_int'])
     
 # buy (or sell) some bitcoins, returns the order ID
 def order(order_type, amount, price = None):
-    args =  {'amount_int': amount, 'type': order_type}
+    args = {'amount_int': amount, 'type': order_type}
     
     # if there is no price argument, place a market order
     if price is not None:
         args['price_int'] = price
     
-    output = send_request('BTCUSD/money/order/add', args)
+    output = _send_request('BTCUSD/money/order/add', args)
     
+    # check if order was successfully added
     if output['result'] == 'success':
         return str(output['data'])
     else:
         pprint.pprint(output)
         sys.exit('Error: MtGox order was unsuccessful.')
-        
-# sell some bitcoins
