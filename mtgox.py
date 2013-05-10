@@ -35,7 +35,7 @@ def order(order_type, amount, price = None):
     args = {'amount_int': amount, 'type': order_type}
     
     # if there is no price argument, place a market order
-    if price is not None:
+    if price != None:
         args['price_int'] = price
     
     output = _send_request('BTCUSD/MONEY/ORDER/ADD', args)
