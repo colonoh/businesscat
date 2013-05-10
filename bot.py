@@ -13,7 +13,7 @@ BTC = 1e8 # conversion factor for BTC
 target_price = 126.381 # USD/BTC
 percent_change = 0.03 # percent change at which to do the opposite action
 action = 'selling' # start with buying
-amount = 0.01 # amount of BTC to play with
+amount = 1.00 # amount of BTC to play with
 # ==================================================================
 
 # all numbers are mtgox friendly
