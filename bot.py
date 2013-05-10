@@ -22,7 +22,7 @@ amount = amount*BTC
 
 # return the current time nicely formatted
 def now():
-    return time.strftime(%I:%M:%S %p)
+    return time.strftime('%I:%M:%S %p')
 
 # every X minutes...
 while(True):
@@ -31,7 +31,7 @@ while(True):
     print '[{}]    Bid: {} $/BTC    Ask: {} $/BTC    Target: {} $/USD    Currently {}'.format(now(), buy_price/USD, sell_price/USD, target_price/USD, action)
     
     # if below the adjusted target value, buy
-    if action == 'buying' and sell_price =< target_price:
+    if action == 'buying' and sell_price <= target_price:
         print '[{}]    Buying {} BTC at {} $/BTC'.format(now(), amount/BTC, target_price/USD)
         order_id = mtgox.order('bid', amount, target_price)
         # pick new target and switch to selling
