@@ -1,5 +1,5 @@
 '''Interface to MtGox'''
-import hmac, urllib, urllib2, hashlib, base64, json, sys, time
+import hmac, urllib, urllib2, hashlib, base64, json, time
 
 import key
     
@@ -9,18 +9,18 @@ def _send_request(api_method, method_args={}):
     tries_left = 9    
     while tries_left > 0:
         try:
-            # add the nonce and then convert to a percent encoded string
+            # add the nonce and then create a percent encoded string
             method_args['nonce'] = int(time.time() * 1000000)
-            method_args = urllib.urlencode(method_args.items())
+            method_args_url = urllib.urlencode(method_args.items())
             
-            auth_code = hmac.new(base64.b64decode(key.secret), api_method + chr(0) + method_args, hashlib.sha512)
+            auth_code = hmac.new(base64.b64decode(key.secret), api_method + chr(0) + method_args_url, hashlib.sha512)
             header = {
                 'User-Agent': 'businesscat-bot',
                 'Rest-Key': key.key,
                 'Rest-Sign': base64.b64encode(str(auth_code.digest())),
             }
             
-            request = urllib2.Request('https://data.mtgox.com/api/2/' + api_method, method_args, header)
+            request = urllib2.Request('https://data.mtgox.com/api/2/' + api_method, method_args_url, header)
             response = urllib2.urlopen(request, method_args)
             return json.load(response)
     
@@ -42,7 +42,7 @@ def order(order_type, amount, price=None):
     '''send in an order and return the order ID'''
     args = {'amount_int': amount, 'type': order_type}
     
-    # if there is no price argument, place a market order
+    # if there is a specified price, use it, otherwise it's a market order
     if price != None:
         args['price_int'] = price
     
