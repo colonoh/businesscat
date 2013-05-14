@@ -21,10 +21,11 @@ Run the script using "python bot.py".  With the parameters above, it will wait u
 
 ## Todo
 - [x] add exception handling to mtgox requests
-- [ ] simplify buy/sell code?
-- [ ] convert to Python3?
+- [ ] consolidate buy/sell code?
 - [ ] check to see if previous order fulfilled
+- [ ] use floating orders?
 - [ ] add trend checking?
+- [ ] convert to Python3?
 
 ## References
 * https://github.com/perol/funny-bot-bitcoin
