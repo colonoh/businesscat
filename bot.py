@@ -6,7 +6,7 @@ import mtgox
 
 target_price = 126.381 # USD/BTC
 percent_change = 0.03 # percent change at which to do the opposite action
-action = 'selling' # start with buying
+action = 'Selling' # start with buying
 amount = 1.00 # amount of BTC to play with
 
 USD = 1e5 # conversion factor for USD
@@ -19,7 +19,7 @@ amount = amount*BTC
 
 def now():
     '''Returns the time in a nice format'''
-    return time.strftime('%I:%M:%S %p')
+    return '[' + time.strftime('%I:%M:%S %p') + ']'
 
 
 # buy low, sell high
@@ -27,17 +27,17 @@ while(True):
     ## check the trend and adjust the target value accordingly
     buy_price, sell_price = mtgox.get_prices()
     # if below the adjusted target value, buy
-    if action == 'buying' and sell_price <= target_price:
+    if action == 'Buying' and sell_price <= target_price:
         print('[{0}] Buying {1} BTC at {2} USD/BTC'.format(now(), amount/BTC, target_price/USD))
         order_id = mtgox.order('bid', amount, target_price)
-        action = 'selling'
+        action = 'Selling'
         target_price = target_price*(1 + percent_change)
     # if above the adjusted target value, sell
-    elif action == 'selling' and buy_price >= target_price:
+    elif action == 'Selling' and buy_price >= target_price:
         print('[{0}] Selling {1} BTC at {2} USD/BTC'.format(now(), amount/BTC, target_price/USD))
         order_id = mtgox.order('ask', amount, target_price)
-        action = 'buying'
+        action = 'Buying'
         target_price = target_price*(1 - percent_change)
     
-    print('[{0}] Bid: {1} Ask: {2} Target: {3} Amount: {4} {5}'.format(now(), buy_price/USD, sell_price/USD, target_price/USD, amount/BTC, action))
+    print(now(), 'Bid: ', buy_price/USD, 'Ask: ', sell_price/USD, action, ' at ', target_price/BTC)
     time.sleep(60)
