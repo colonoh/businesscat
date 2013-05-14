@@ -28,16 +28,16 @@ while(True):
     buy_price, sell_price = mtgox.get_prices()
     # if below the adjusted target value, buy
     if action == 'Buying' and sell_price <= target_price:
-        print('[{0}] Buying {1} BTC at {2} USD/BTC'.format(now(), amount/BTC, target_price/USD))
+        print(now(), action, amount/BTC, 'at', target_price/USD)
         order_id = mtgox.order('bid', amount, target_price)
         action = 'Selling'
         target_price = target_price*(1 + percent_change)
     # if above the adjusted target value, sell
     elif action == 'Selling' and buy_price >= target_price:
-        print('[{0}] Selling {1} BTC at {2} USD/BTC'.format(now(), amount/BTC, target_price/USD))
+        print(now(), action, amount/BTC, 'at', target_price/USD)
         order_id = mtgox.order('ask', amount, target_price)
         action = 'Buying'
         target_price = target_price*(1 - percent_change)
     
-    print(now(), 'Bid: ', buy_price/USD, 'Ask: ', sell_price/USD, action, ' at ', target_price/BTC)
+    print(now(), 'Bid:', buy_price/USD, 'Ask:', sell_price/USD, action, 'at', target_price/BTC)
     time.sleep(60)
