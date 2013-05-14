@@ -25,3 +25,7 @@ Run the script using "python bot.py".  With the parameters above, it will wait u
 - [ ] convert to Python3?
 - [ ] check to see if previous order fulfilled
 - [ ] add trend checking?
+
+## References
+* https://github.com/perol/funny-bot-bitcoin
+* https://bitbucket.org/nitrous/mtgox-api/
