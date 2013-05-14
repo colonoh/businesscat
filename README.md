@@ -17,11 +17,11 @@ Then, edit the user parameters in bot.py:
     action = 'selling' # start with buying
     amount = 1.00 # amount of BTC to play with
 
-Run the script using "python bot.py".  With the parameters above, it will wait until the ask price is 126.381 and then put in a sell order for 1.00 BTC at 126.381 USD/BTC.  Next it will adjust the target price so that it is 0.97 of 126.381 and switching to "buying" mode.  It then waits 60 seconds and repeats.
+Run the script using "python bot.py".  With the parameters above, it will wait until the ask price is 126.381 and then put in a sell order for 1.00 BTC at 126.381 USD/BTC.  Next it will adjust the target price so that it is 97% of 126.381 and switch to "buying" mode.  It then waits 60 seconds and repeats.
 
 ## Todo
 - [x] add exception handling to mtgox requests
 - [ ] simplify buy/sell code?
-- [ ] convert to Python3
+- [ ] convert to Python3?
 - [ ] check to see if previous order fulfilled
 - [ ] add trend checking?
