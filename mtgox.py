@@ -25,11 +25,13 @@ def _send_request(api_method, method_args={}):
         pprint.pprint(output)
         sys.exit('Error: MtGox request was unsuccessful.')
 
+
 # get current prices for buy and sell orders
 def get_prices():
     output = _send_request('BTCUSD/MONEY/TICKER_FAST')    
     return int(output['data']['buy']['value_int']), int(output['data']['sell']['value_int'])
-    
+
+
 # buy (or sell) some bitcoins, returns the order ID
 def order(order_type, amount, price = None):
     args = {'amount_int': amount, 'type': order_type}
@@ -40,6 +42,7 @@ def order(order_type, amount, price = None):
     
     output = _send_request('BTCUSD/MONEY/ORDER/ADD', args)
     return str(output['data']) # return the order ID
+
 
 def cancel(order_id):
     return _send_request('BTCUSD/MONEY/ORDER/CANCEL', {'oid': order_id})
