@@ -1,5 +1,8 @@
-import mtgox
+'''Trading bot which buys low and sells high'''
+
 import time
+
+import mtgox
 
 target_price = 126.381 # USD/BTC
 percent_change = 0.03 # percent change at which to do the opposite action
@@ -15,6 +18,7 @@ amount = amount*BTC
 
 
 def now():
+    '''Returns the time in a nice format'''
     return time.strftime('%I:%M:%S %p')
 
 
